@@ -32,7 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ['https://web-production-a87b.up.railway.app']
 
-
+#check
 #Test commment
 # Application definition
 
