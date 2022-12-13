@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+                        For more information about DataTables, please visit the <a target="_blank"
+                            href="https://datatables.net">official DataTables documentation</a>.</p>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">All Tenants</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <tbody>
+                                        <tr>                                           
+                                            <td></td>
+                                            <td>Tenant Name</td>
+                                            <td>Phone Number</td>
+                                            <td>Rent Start Date</td>
+                                            <td>Rent End Date</td>
+                                            <td>Apartment</td>
+                                            <td>Rent Per Month</td>
+                                            <td></td>
+                                        </tr>
+                                        
+                                        {% for tenant in tenants %}
+                                        <tr>
+                                            <td>
+                                            <a class = " btn-primary btn-sm" href= "{% url 'showTenant'  id=tenant.id %}">Edit</a>
+                                            </td>
+                                            <td>
+                                                <a value="{{ tenant.id}}">{{ tenant.first_name }}  {{ tenant.last_name }} </a>
+                                            </td>
+                                            <td>
+                                                <a value="{{ tenant.id}}">{{ tenant.phone}}</a>
+                                            </td>
+                                            <td>
+                                                <a value="{{ tenant.id}}">{{ tenant.rent_start }}</a>
+                                            </td>
+                                            <td>
+                                                <a value="{{ tenant.id}}">{{ tenant.rent_end }} </a>
+                                            </td>
+                                            {% comment %} <td>
+                                                <a value="{{ apartment.id}}">{{ apartment.house }} </a>
+                                            </td>
+                                            <td>
+                                                <a value="{{ apartment.id}}">{{ apartment.rent }} </a>
+                                            </td> {% endcomment %}
+                                               
+                                            {% for apartment in apartments%}
+                                                {% if tenant.apartment_id == apartment.id%}
+                                                <td> 
+                                                    <a value="{{apartment.id}}">{{ apartment.house }} </a>
+                                                </td>
+                                                <td> 
+                                                    <a value="{{apartment.id}}">{{ apartment.rent }} </a>
+                                                </td>
+                                                {% endif %}
+                                           {% endfor %}
+                                           <td>
+                                           <a class = " btn-primary btn-sm" href= "{% url 'deleteTenant' id=tenant.id %}">Delete</a>  
+                                           </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+             
+            
+            
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Revenue</h1>
+                </div>
+
+                <div class="row">
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Earnings (Monthly)</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$
+                                            <a value="{{monthly.id}}">{{ monthly}} </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Earnings (Annual) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Earnings (Annual)</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$
+                                            <a value="{{annual.id}}">{{ annual}} </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container-fluid">
+                <form name="form" method="post" action="{%url 'addTenant' %}">
+                    {% csrf_token%}
+                    <br>
+                    <h1 class="h3 mb-2 text-gray-800">Add New Tenant</h1>
+                    <br>
+
+                    <div class="form-group">
+                    <label for='rent_start_date'>Rent Start Date: </label>
+                    <input type="date" name = 'rent_start_date' id='rent_start_date'>
+                    <label for='rent_end_date'>Rent End Date: </label>
+                    <input type="date" name = 'rent_end_date' id='rent_end_date'>
+                    </div>
+                       
+                    <br>
+                            
+                    <div class="form-group">
+                        <label for='first_name'>First Name: </label>
+                        <input type="text" style="width: 500px" class="form-control form-control-user" name = 'first_name' 
+                            id='first_name' placeholder='Enter First Name...'>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for='last_name'>Last Name: </label>
+                        <input type="text" style="width: 500px" class="form-control form-control-user" name = 'last_name' 
+                            id='last_name' placeholder='Enter Last Name...'>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for='phone'>Phone Number: </label>
+                        <input type="text" style="width: 500px" class="form-control form-control-user" name = 'phone' 
+                            id='phone' placeholder='Enter Phone Number...'>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for='house'>Apartment Name: </label>
+                        <input type="text" style="width: 500px" class="form-control form-control-user" name = 'house' 
+                            id='house' placeholder='Enter Apartment Name...'>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for='rent'>Rent Ammount: </label>
+                        <input type="text" style="width: 500px" class="form-control form-control-user" name = 'rent' 
+                            id='rent' placeholder='Enter Rent Ammount...'>
+                        <br>
+                    </div>
+            
+                    <button class = "btn-lg" type="submit">Add Tenant</button>
+                    <br></br>
+                </form>
+            </div>
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
+
+{% endblock %}
