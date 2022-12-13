@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn <FiftyEast>.wsgi
+web: python manage.py migrate && gunicorn FiftyEast.wsgi
