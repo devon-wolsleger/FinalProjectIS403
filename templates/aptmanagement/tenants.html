@@ -30,11 +30,11 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
+                    <!-- Page Heading 
                     <h1 class="h3 mb-2 text-gray-800">Tables</h1>
                     <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
                         For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p>
+                            href="https://datatables.net">official DataTables documentation</a>.</p>-->
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -43,19 +43,42 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <div id="dataTable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable"></label>
+                                
+                                </div>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <tbody>
-                                        <tr>                                           
-                                            <td></td>
-                                            <td>Tenant Name</td>
-                                            <td>Phone Number</td>
-                                            <td>Rent Start Date</td>
-                                            <td>Rent End Date</td>
-                                            <td>Apartment</td>
-                                            <td>Rent Per Month</td>
-                                            <td></td>
+                                    <thead>
+                                        <tr role="row">         
+                                            <th class="sorting sorting_desc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Edit" style="width: 74px;">Edit</th>
+                                            <th class="sorting sorting_desc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Tenant Name(s): activate to sort column ascending" style="width: 74px;" aria-sort="descending">Name</th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Phone Number: activate to sort column ascending" style="width: 107px;">Position</th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending" style="width: 54px;">Office</th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Rent Start Date: activate to sort column ascending" style="width: 31px;">Rent Start Date</th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Rent End Date: activate to sort column ascending" style="width: 68px;">Rent End Date</th>
+                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Apartment: activate to sort column ascending" style="width: 67px;">Apartment</th>                               
+                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Rent Per Month: activate to sort column ascending" style="width: 67px;">Rent Per Month</th>                               
+                                            <th class="sorting sorting_desc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Delete" style="width: 74px;">Delete</th>
                                         </tr>
+                                    </thead>
+                                
+                                {%if numTenants > 5%}
+                                    <tfoot>
+                                        <tr>
+                                            <th rowspan="1" colspan="1"></th>
+                                            <th rowspan="1" colspan="1">Tenant Name(s)</th>
+                                            <th rowspan="1" colspan="1">Phone Number</th>
+                                            <th rowspan="1" colspan="1">Email</th>
+                                            <th rowspan="1" colspan="1">Rent Start Date</th>
+                                            <th rowspan="1" colspan="1">Rent End Date</th>
+                                            <th rowspan="1" colspan="1">Apartment</th>
+                                            <th rowspan="1" colspan="1">Rent Per Month</th>
+                                            <th rowspan="1" colspan="1"></th>
+
+                                        </tr>
+                                    </tfoot>
+                                {% endif %}
                                         
+                                    <tbody>
                                         {% for tenant in tenants %}
                                         <tr>
                                             <td>
@@ -66,6 +89,9 @@
                                             </td>
                                             <td>
                                                 <a value="{{ tenant.id}}">{{ tenant.phone}}</a>
+                                            </td>
+                                            <td>
+                                                <a value="{{ tenant.id}}">{{ tenant.email}}</a>
                                             </td>
                                             <td>
                                                 <a value="{{ tenant.id}}">{{ tenant.rent_start }}</a>
@@ -160,11 +186,11 @@
             </div>
 
 
-            <div class="container-fluid">
+            <div class="container-fluid" style="float:right;">
                 <form name="form" method="post" action="{%url 'addTenant' %}">
                     {% csrf_token%}
                     <br>
-                    <h1 class="h3 mb-2 text-gray-800">Add New Tenant</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Add New Tenant(s)</h1>
                     <br>
 
                     <div class="form-group">
@@ -177,9 +203,9 @@
                     <br>
                             
                     <div class="form-group">
-                        <label for='first_name'>First Name: </label>
+                        <label for='first_name'>First Name(s): </label>
                         <input type="text" style="width: 500px" class="form-control form-control-user" name = 'first_name' 
-                            id='first_name' placeholder='Enter First Name...'>
+                            id='first_name' placeholder='Enter First Name(s)...'>
                     </div>
                     <br>
                     <div class="form-group">
@@ -195,19 +221,30 @@
                     </div>
                     <br>
                     <div class="form-group">
+                        <label for='email'>Email: </label>
+                        <input type="text" style="width: 500px" class="form-control form-control-user" name = 'email' 
+                            id='email' placeholder='Enter Email Address...'>
+                    </div>
+                    <br>
+                    <div class="form-group">
                         <label for='house'>Apartment Name: </label>
                         <input type="text" style="width: 500px" class="form-control form-control-user" name = 'house' 
                             id='house' placeholder='Enter Apartment Name...'>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for='rent'>Rent Ammount: </label>
+                        <label for='rent'>Rent Amount: </label>
                         <input type="text" style="width: 500px" class="form-control form-control-user" name = 'rent' 
-                            id='rent' placeholder='Enter Rent Ammount...'>
+                            id='rent' placeholder='Enter Rent Amount...'>
                         <br>
                     </div>
             
-                    <button class = "btn-lg" type="submit">Add Tenant</button>
+                    <button type="submit" class="btn btn-secondary btn-icon-split">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
+                        <span class="text">Add Tenant</span>
+                    </button>
                     <br></br>
                 </form>
             </div>

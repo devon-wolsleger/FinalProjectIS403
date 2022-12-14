@@ -7,6 +7,7 @@ class Tenant(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=10)
+    email = models.EmailField(max_length=50)
     rent_start = models.DateField()
     rent_end = models.DateField()
     apartment = models.ForeignKey('Apartments', null=True, blank=True, on_delete=models.SET_NULL)
@@ -14,8 +15,8 @@ class Tenant(models.Model):
 
     # These were causing problems with the POST information during INTEX, but can be used when displaying data
     def __str__(self):
-        phone = '(%s) %s-%s' %(self.phone[0:3],self.phone[3:6],self.phone[6:10])
-        return phone  
+
+        return self.first_name  
 
     class Meta:
         db_table = 'Tenant'
@@ -39,6 +40,11 @@ class Admin(models.Model):
 class Apartments(models.Model):
     house = models.CharField(max_length=50)
     rent = models.IntegerField()
+
+    def __str__(self):
+        if self.house == "" :
+            self.house = "blank"
+        return (self.house)
 
     class Meta:
         db_table = 'Apartments'
